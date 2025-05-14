@@ -2,9 +2,11 @@ package controller
 
 import (
 	"dogwalkerapi/config"
+	"encoding/json"
 	"html/template"
 	"log"
 	"net/http"
+	"slices"
 )
 
 type WalkerControllerImp struct{}
@@ -21,6 +23,7 @@ func GetTemplateConfigFromConfig() config.TemplateConfigI {
 type WalkerControllerI interface {
 	Hello(w http.ResponseWriter, r *http.Request)
 	RunGame(w http.ResponseWriter, r *http.Request)
+	Play(w http.ResponseWriter, r *http.Request)
 }
 
 func NewWalkerController() WalkerControllerI {
@@ -79,5 +82,24 @@ func (*WalkerControllerImp) RunGame(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
+}
+
+func (*WalkerControllerImp) Play(w http.ResponseWriter, r *http.Request) {
+
+	options := []string{"piedra", "papel", "tijera"}
+	optionSelected := r.Header.Get("jugada")
+
+	isValidOption := slices.Contains(options, optionSelected)
+
+	if isValidOption {
+		return
+	}
+	return
+
+	// resultado := calcularResultado(j.Jugada)
+	json.NewEncoder(w).Encode(map[string]string{
+		"resultado": "resultado",
+	})
 
 }
