@@ -1,0 +1,27 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  
+    <header class="bg-black text-white text-center py-3">
+        <h1>{{ .Title }}</h1>
+    </header>
+
+   
+    <div class="container mt-4">
+        {{ block "content" . }}{{ end }}
+    </div>
+
+ 
+    <footer class="bg-dark text-white text-center py-3  fixed-bottom">
+        <p>&copy; 2025 Todos los derechos e izquierdos bien puestos</p>
+    </footer>
+</body>
+</html>
+{{ end }}
