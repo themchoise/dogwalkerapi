@@ -1,13 +1,23 @@
 {{ define "content" }}
-    <section class="container py-5">
-        <p class="text-center">
-            <a href="/walkers" class="btn btn-success btn-lg">Volver</a>
-        </p>
-        <h2 class="display-4 fw-bold py-3 text-center">Escoge</h2>
-        <div class="container bg-gradient flex justify-content-center">
-            <button type="button" class="btn btn-outline-primary">Piedra</button>
-            <button type="button" class="btn btn-outline-primary">Papel</button>
-            <button type="button" class="btn btn-outline-primary">Tijrea</button>
-        </div>
-    </section>
+ <section class="container py-5 text-center">
+    <p>
+        <a href="/walkers" class="btn btn-success btn-lg">Volver</a>
+    </p>
+
+    <h2 class="display-4 fw-bold py-4">Escoge tu jugada</h2>
+
+    <div class="d-flex justify-content-center gap-4 flex-wrap">
+        <button type="button" class="btn btn-outline-primary btn-lg game-btn" data-value="Piedra">
+            🪨 Piedra
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-lg game-btn" data-value="Papel">
+            📄 Papel
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-lg game-btn" data-value="Tijera">
+            ✂️ Tijera
+        </button>
+    </div>
+
+    <p class="mt-4 fs-5" id="result"></p>
+</section>
 {{ end }}
