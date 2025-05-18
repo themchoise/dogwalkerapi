@@ -25,7 +25,7 @@ func (w *WalkerRouterImp) RegisterRoutes() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
-	http.HandleFunc("/walkers", w.walkerController.Hello)
+	http.HandleFunc("/hello", w.walkerController.Hello)
 	http.HandleFunc("/rungame", w.walkerController.RunGame)
 	http.HandleFunc("/play", w.walkerController.Play)
 }

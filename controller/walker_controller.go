@@ -13,6 +13,10 @@ import (
 
 type WalkerControllerImp struct{}
 
+const PIEDRA = "Piedra"
+const PAPEL = "Papel"
+const TIJERA = "Tijera"
+
 type PageData struct {
 	Title   string
 	Message string
@@ -32,6 +36,27 @@ func (j *JugadasData) JugadasDataBetter() string {
 		return "Papel"
 	}
 	return "Piedra"
+
+}
+
+func IsPlayerVictory(player string, computer string) bool {
+
+	switch player {
+	case PIEDRA:
+		if computer == PAPEL {
+			return false
+		}
+	case PAPEL:
+		if computer == TIJERA {
+			return false
+		}
+	case TIJERA:
+		if computer == PIEDRA {
+			return false
+		}
+	}
+
+	return true
 
 }
 
@@ -107,9 +132,9 @@ func (*WalkerControllerImp) Play(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	options := []string{"Piedra", "Papel", "Tijera"}
-	optionSelected := r.Header.Get("jugada")
+	playerOption := r.Header.Get("jugada")
 
-	isValidOption := slices.Contains(options, optionSelected)
+	isValidOption := slices.Contains(options, playerOption)
 
 	if !isValidOption {
 		http.Error(w, "Opción inválida", http.StatusBadRequest)
@@ -134,7 +159,7 @@ func (*WalkerControllerImp) Play(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	switch optionSelected {
+	switch playerOption {
 	case "Piedra":
 		jugadasData.Piedra++
 	case "Papel":
@@ -157,7 +182,9 @@ func (*WalkerControllerImp) Play(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("Error escribiendo JSON:", err)
 	}
 
-	json.NewEncoder(w).Encode(map[string]string{
-		"resultado": "La Pc Jugo: " + computerOption,
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"resultado":       "La Pc Jugo: " + computerOption,
+		"isPlayerVictory": IsPlayerVictory(playerOption, computerOption),
+		"jugadaPC":        computerOption,
 	})
 }

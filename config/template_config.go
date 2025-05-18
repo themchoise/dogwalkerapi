@@ -17,7 +17,7 @@ func GetTemplateConfig() TemplateConfigI {
 
 func (t *TemplateConfigImp) Config() TemplateConfig {
 	return TemplateConfig{
-		Title:   "Piedra Papel o Tijera",
+		Title:   "",
 		Content: "",
 	}
 }

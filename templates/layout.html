@@ -7,23 +7,31 @@
     <title>{{ .Title }}</title>
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  
-    <header class="bg-black text-white text-center py-3">
-        <h1>{{ .Title }}</h1>
-    </header>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
 
-   
-    <div class="container mt-4">
-        {{ block "content" . }}{{ end }}
-    </div>
+  .main-container {
+    flex: 1;
+  }
+</style>
+<body class="d-flex flex-column">
+  <header class="bg-black text-white text-center py-3">
+    <h1>{{ .Title }}</h1>
+  </header>
 
- 
-    <footer class="bg-dark text-white text-center py-3  fixed-bottom">
-        <p>&copy; 2025 Todos los derechos e izquierdos bien puestos</p>
-    </footer>
+  <div class="container main-container d-flex justify-content-center align-items-center">
+    {{ block "content" . }}{{ end }}
+  </div>
+
+  <footer class="bg-dark text-white text-center py-3">
+    
+  </footer>
+
   <script src="/static/js/rungame.js"></script>
-
 </body>
+
 </html>
 {{ end }}
