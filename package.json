@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "cypress": "^14.3.3"
+  },
+  "scripts": {
+    "start-backend": "go run backend/main.go",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "start-server-and-test start-backend http://localhost:8080 cy:run"
+  }
+}
