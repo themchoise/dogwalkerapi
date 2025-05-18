@@ -41,7 +41,12 @@ func (j *JugadasData) JugadasDataBetter() string {
 
 func IsPlayerVictory(player string, computer string) bool {
 
+	if player == computer {
+		return false
+	}
+
 	switch player {
+
 	case PIEDRA:
 		if computer == PAPEL {
 			return false
