@@ -2,6 +2,9 @@ package controller
 
 import (
 	"dogwalkerapi/config"
+	"dogwalkerapi/mock"
+
+	"dogwalkerapi/model"
 	"html/template"
 	"net/http"
 	"net/http/httptest"
@@ -15,12 +18,12 @@ import (
 func TestJugadasDataBetter(t *testing.T) {
 	tests := []struct {
 		nombre   string
-		data     JugadasData
+		data     model.JugadasData
 		esperado string
 	}{
-		{"Predice Tijera", JugadasData{Piedra: 1, Papel: 2, Tijera: 3}, "Piedra"},
-		{"Predice Tijera", JugadasData{Piedra: 2, Papel: 3, Tijera: 2}, "Tijera"},
-		{"Predice Papel", JugadasData{Piedra: 3, Papel: 2, Tijera: 1}, "Papel"},
+		{"Predice Tijera", model.JugadasData{Piedra: 1, Papel: 2, Tijera: 3}, "Piedra"},
+		{"Predice Tijera", model.JugadasData{Piedra: 2, Papel: 3, Tijera: 2}, "Tijera"},
+		{"Predice Papel", model.JugadasData{Piedra: 3, Papel: 2, Tijera: 1}, "Papel"},
 	}
 
 	for _, tt := range tests {
@@ -75,17 +78,22 @@ func TestGetTemplateConfigFromConfig(t *testing.T) {
 	}
 
 }
-
 func TestNewWalkerController(t *testing.T) {
-
-	expectedType := reflect.TypeOf(&WalkerControllerImp{})
-
-	resultType := reflect.TypeOf(NewWalkerController())
-
-	if resultType != expectedType {
-		t.Errorf("La estructura del resultado no coincide. Esperado: %v, Obtenido: %v", expectedType, resultType)
+	mockService := &mock.MockWalkerService{
+		WriteFileFunc: func(j *model.JugadasData) error {
+			return nil
+		},
+		OpenFileFunc: func() ([]byte, error) {
+			return []byte(`{"jugada":"mock"}`), nil
+		},
 	}
 
+	expectedType := reflect.TypeOf(&WalkerControllerImp{})
+	resultType := reflect.TypeOf(NewWalkerController(mockService))
+
+	if resultType != expectedType {
+		t.Errorf("Tipo inesperado. Esperado: %v, Obtenido: %v", expectedType, resultType)
+	}
 }
 
 func TestHello(t *testing.T) {
@@ -116,7 +124,6 @@ func TestHello(t *testing.T) {
 	})
 
 	handler.ServeHTTP(rr, req)
-
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("Status code incorrecto. Esperado: %d, Obtenido: %d", http.StatusOK, status)

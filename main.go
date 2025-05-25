@@ -2,14 +2,18 @@ package main
 
 import (
 	"dogwalkerapi/controller"
+	"dogwalkerapi/repository"
 	"dogwalkerapi/routes"
+	"dogwalkerapi/service"
 	"log"
 	"net/http"
 )
 
 func main() {
 
-	walkerController := controller.NewWalkerController()
+	repo := repository.NewWalkerRepository()
+	service := service.NewWalkerService(repo)
+	walkerController := controller.NewWalkerController(service)
 	walkerRouter := routes.NewWalkerRouter(walkerController)
 	walkerRouter.RegisterRoutes()
 
