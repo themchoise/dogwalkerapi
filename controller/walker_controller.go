@@ -28,6 +28,7 @@ type ResultadoDTO struct {
 	Resultado       string `json:"resultado"`
 	IsPlayerVictory bool   `json:"isPlayerVictory"`
 	JugadaPC        string `json:"jugadaPC"`
+	IsDraw          bool   `json:"isdraw"`
 }
 
 func IsPlayerVictory(player string, computer string) bool {
@@ -171,6 +172,7 @@ func (c *WalkerControllerImp) Play(w http.ResponseWriter, r *http.Request) {
 		Resultado:       "La Pc Jugo: " + computerOption,
 		IsPlayerVictory: IsPlayerVictory(playerOption, computerOption),
 		JugadaPC:        computerOption,
+		IsDraw:          playerOption == computerOption,
 	}
 
 	json.NewEncoder(w).Encode(resultado)

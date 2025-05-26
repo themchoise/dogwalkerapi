@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sync"
 )
 
 type WalkerRepositoryI interface {
@@ -13,13 +14,17 @@ type WalkerRepositoryI interface {
 	Read() ([]byte, error)
 }
 
-type WalkerControllerImp struct{}
+type WalerRepositoryImp struct {
+	mu sync.RWMutex
+}
 
-func (w *WalkerControllerImp) Read() (data []byte, err error) {
+func (r *WalerRepositoryImp) Read() (data []byte, err error) {
 
-	log.Printf("Hola")
+	r.mu.RLock()
+	defer r.mu.RUnlock()
 
 	readFile, err := os.Open("jugadas.json")
+
 	if err != nil {
 		log.Printf("Error abriendo archivo: %v", err)
 		return nil, err
@@ -35,9 +40,13 @@ func (w *WalkerControllerImp) Read() (data []byte, err error) {
 
 }
 
-func (w *WalkerControllerImp) Save(jugadasData *model.JugadasData) error {
+func (r *WalerRepositoryImp) Save(jugadasData *model.JugadasData) error {
+
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
 	save, err := os.OpenFile("jugadas.json", os.O_WRONLY|os.O_TRUNC, 0644)
+
 	if err != nil {
 		log.Printf("Error escriendo archivo para escritura: %v", err)
 		return err
@@ -55,5 +64,5 @@ func (w *WalkerControllerImp) Save(jugadasData *model.JugadasData) error {
 }
 
 func NewWalkerRepository() WalkerRepositoryI {
-	return &WalkerControllerImp{}
+	return &WalerRepositoryImp{}
 }

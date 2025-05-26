@@ -36,22 +36,25 @@ document.addEventListener("DOMContentLoaded", () => {
       request(choice).then((res) => {
         if (!res) return;
 
-        const { isPlayerVictory, resultado, jugadaPC } = res;
+        const { isPlayerVictory, resultado, isdraw, jugadaPC } = res;
+        console.log(isdraw);
 
-        // Mostrar resultado de la PC y victoria/derrota
         computer.innerHTML = resultado;
-        gameResult.innerHTML = isPlayerVictory ? "✅ Victoria" : "❌ Derrota";
+        gameResult.innerHTML = isdraw
+          ? "Empate"
+          : isPlayerVictory
+          ? "Victoria"
+          : "Derrota";
 
-        // Actualizar contador
-        if (isPlayerVictory) {
+        if (isPlayerVictory && !isdraw) {
           wins++;
           winsSpan.textContent = wins;
-        } else {
+        }
+        if (!isPlayerVictory && !isdraw) {
           losses++;
           lossesSpan.textContent = losses;
         }
 
-        // Agregar al historial
         const li = document.createElement("li");
         li.classList.add(
           "list-group-item",
@@ -62,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span><strong>Vos:</strong> ${choice}</span>
           <span><strong>PC:</strong> ${jugadaPC || "?"}</span>
         `;
-        historyList.prepend(li); // Última jugada arriba
+        historyList.prepend(li);
       });
     });
   });
